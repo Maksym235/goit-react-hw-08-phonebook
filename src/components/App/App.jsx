@@ -3,7 +3,11 @@ import { lazy, useEffect } from 'react';
 
 //--------------REDUX--------------
 import { useDispatch } from 'react-redux';
-import { fetchContacts } from 'redux/Contacts/operations';
+import { refreshUser } from 'redux/Auth/authOperations';
+import { useSelector } from 'react-redux';
+import { selectIsRefresh } from 'redux/Auth/selectors';
+
+// import { fetchContacts } from 'redux/Contacts/operations';
 // import { selectIsLoading, selectError } from 'redux/Contacts/selectors';
 
 //--------------COMPONENTS---------
@@ -18,15 +22,18 @@ const RegisterPage = lazy(() => import('../../pages/Register/Register'));
 const ContactPage = lazy(() => import('../../pages/Contacts/Contacts'));
 
 export function App() {
-  // const isLoading = useSelector(selectIsLoading);
-  // const isError = useSelector(selectError);
-  const dispach = useDispatch();
+  const dispatch = useDispatch();
+  const isRefresh = useSelector(selectIsRefresh);
 
   useEffect(() => {
-    dispach(fetchContacts());
-  }, [dispach]);
+    dispatch(refreshUser());
+  }, [dispatch]);
+  // const isLoading = useSelector(selectIsLoading);
+  // const isError = useSelector(selectError);
 
-  return (
+  return isRefresh ? (
+    <h5>Refreshing user, please wait...</h5>
+  ) : (
     <Routes>
       <Route path="/" element={<Layout />}>
         <Route index element={<HomePage />} />
@@ -35,20 +42,21 @@ export function App() {
         <Route path="/contacts" element={<ContactPage />} />
       </Route>
     </Routes>
-    // <Conteiner>
-    //   <RegisterForm />
-    //   <LoginForm />
-    //   <Title>
-    //     PHONEBOOK
-    //     <BsFillTelephonePlusFill />
-    //   </Title>
-    //   <Form />
-    //   <ContactsTitle>
-    //     Contacts <IoMdContact />
-    //   </ContactsTitle>
-    //   <Input />
-    //   {isLoading && !isError && <b>Loading contacts...</b>}
-    //   <ContactList />
-    // </Conteiner>
   );
 }
+
+// <Conteiner>
+//   <RegisterForm />
+//   <LoginForm />
+//   <Title>
+//     PHONEBOOK
+//     <BsFillTelephonePlusFill />
+//   </Title>
+//   <Form />
+//   <ContactsTitle>
+//     Contacts <IoMdContact />
+//   </ContactsTitle>
+//   <Input />
+//   {isLoading && !isError && <b>Loading contacts...</b>}
+//   <ContactList />
+// </Conteiner>
