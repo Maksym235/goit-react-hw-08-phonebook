@@ -1,11 +1,10 @@
 import { Conteiner } from './UserMenu.styled';
 import { useDispatch } from 'react-redux';
 import { logOut } from 'redux/Auth/authOperations';
-import { useSelector } from 'react-redux';
-import { selectUser } from 'redux/Auth/selectors';
+import { useAuth } from 'components/hooks/useAuth';
 export function UserMenu() {
   const dispatch = useDispatch();
-  const user = useSelector(selectUser);
+  const { user } = useAuth();
 
   return (
     <Conteiner>

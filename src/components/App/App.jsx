@@ -4,8 +4,7 @@ import { lazy, useEffect } from 'react';
 //--------------REDUX--------------
 import { useDispatch } from 'react-redux';
 import { refreshUser } from 'redux/Auth/authOperations';
-import { useSelector } from 'react-redux';
-import { selectIsRefresh } from 'redux/Auth/selectors';
+import { useAuth } from 'components/hooks/useAuth';
 
 // import { fetchContacts } from 'redux/Contacts/operations';
 // import { selectIsLoading, selectError } from 'redux/Contacts/selectors';
@@ -15,6 +14,8 @@ import { Layout } from 'components/Layout/Layout';
 
 //------------ROUTER-------------
 import { Route, Routes } from 'react-router-dom';
+import { RestrictedRoute } from 'components/Routes/RestrictedRoute';
+import { PrivateRoute } from 'components/Routes/PrivateRoute';
 //---------------PAGES----------------
 const HomePage = lazy(() => import('../../pages/Home/Home'));
 const LoginPage = lazy(() => import('../../pages/Login/Login'));
@@ -23,7 +24,7 @@ const ContactPage = lazy(() => import('../../pages/Contacts/Contacts'));
 
 export function App() {
   const dispatch = useDispatch();
-  const isRefresh = useSelector(selectIsRefresh);
+  const { isRefresh } = useAuth();
 
   useEffect(() => {
     dispatch(refreshUser());
@@ -37,9 +38,27 @@ export function App() {
     <Routes>
       <Route path="/" element={<Layout />}>
         <Route index element={<HomePage />} />
-        <Route path="/login" element={<LoginPage />} />
-        <Route path="/register" element={<RegisterPage />} />
-        <Route path="/contacts" element={<ContactPage />} />
+        <Route
+          path="/register"
+          element={
+            <RestrictedRoute
+              redirectTo="/contacts"
+              component={<RegisterPage />}
+            />
+          }
+        />
+        <Route
+          path="/login"
+          element={
+            <RestrictedRoute redirectTo="/contacts" component={<LoginPage />} />
+          }
+        />
+        <Route
+          path="/contacts"
+          element={
+            <PrivateRoute redirectTo="/login" component={<ContactPage />} />
+          }
+        />
       </Route>
     </Routes>
   );
