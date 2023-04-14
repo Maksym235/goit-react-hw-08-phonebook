@@ -1,6 +1,8 @@
-import { Form, Input, Btn } from './LoginForm.styled';
+import { Form } from './LoginForm.styled';
 import { useDispatch } from 'react-redux';
 import { logIn } from 'redux/Auth/authOperations';
+import TextField from '@mui/material/TextField';
+import Button from '@mui/material/Button';
 export function LoginForm() {
   const dispatch = useDispatch();
   const handleSubmit = evt => {
@@ -19,9 +21,21 @@ export function LoginForm() {
   };
   return (
     <Form onSubmit={handleSubmit}>
-      <Input type="email" name="email" placeholder="email" />
-      <Input type="password" name="password" placeholder="password" />
-      <Btn>Log In</Btn>
+      <TextField
+        id="standard-basic"
+        label="email"
+        variant="standard"
+        type="email"
+        name="email"
+      />
+      <TextField
+        id="standard-basic"
+        label="password"
+        variant="standard"
+        type="password"
+        name="password"
+      />
+      <Button type="submit">Log In</Button>
     </Form>
   );
 }

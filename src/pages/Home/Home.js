@@ -1,7 +1,13 @@
 export default function Home() {
   return (
-    <div>
-      <h1>Home page</h1>
+    <div
+      style={{
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+      }}
+    >
+      <h1>Welcome to your phonebook</h1>
     </div>
   );
 }
