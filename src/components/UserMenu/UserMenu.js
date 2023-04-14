@@ -9,7 +9,7 @@ export function UserMenu() {
 
   return (
     <Conteiner>
-      <p>Welcome, {user.name} </p>
+      <p>{user.email} </p>
       <Button type="button" onClick={() => dispatch(logOut())}>
         Log Out
       </Button>
